@@ -30,14 +30,14 @@ const Navbar = () => {
                 <ul className="hidden items-center gap-8 md:flex">
                     <li>
                         <Link
-                            href="#"
+                            href="/"
                             className="font-display text-sm font-semibold uppercase tracking-wide transition-colors">
                             Workout
                         </Link>
                     </li>
                     <li>
                         <Link
-                            href="#"
+                            href="/my-plan"
                             className="font-display text-sm font-semibold uppercase tracking-wide transition-colors">
                             My plan
                         </Link>
