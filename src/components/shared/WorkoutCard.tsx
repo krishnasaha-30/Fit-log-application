@@ -29,7 +29,6 @@ const WorkoutCard = ({ workout }: IWorkoutCardProps) => {
 
         {/* Content */}
         <div className="p-4">
-          
           {/* Name */}
           <h3 className="font-display text-lg font-bold uppercase leading-snug text-base-content group-hover:text-primary">
             {workout.name}
@@ -43,7 +42,7 @@ const WorkoutCard = ({ workout }: IWorkoutCardProps) => {
           {/* Stats row */}
           <div className="mt-4 flex items-center gap-4 border-t border-base-300 pt-3">
             <span className="stat-chip">⏱ {workout.duration} min</span>
-            <span className="stat-chip">🔥 {workout.calories} kcal</span>
+            <span className="stat-chip">🔥 {workout.caloriesBurned} kcal</span>
             <span className="stat-chip">⭐ {workout.rating}</span>
           </div>
         </div>

@@ -2,14 +2,14 @@ export interface IWorkout {
   id: string;
   name: string;
   image: string;
-  categories: string[];
+  muscleGroups: string[];
   equipment: string;
-  duration: number;
-  calories: number;
-  rating: number;
   difficulty: string;
+  duration: number;
+  caloriesBurned: number;  
   sets: number;
   reps: string;
+  rating: number;
   description: string;
   instructions: string[];
 }

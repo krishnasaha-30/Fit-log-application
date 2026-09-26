@@ -2,13 +2,21 @@
 
 import { getWorkouts } from "@/lib/api";
 import { IWorkout } from "@/types/workout.type";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import WorkoutCard from "@/components/shared/WorkoutCard";
+
+type TSortKey = "duration" | "caloriesBurned" | "rating";
+
+const sortOptions: { key: TSortKey; label: string }[] = [
+  { key: "duration", label: "Duration" },
+  { key: "caloriesBurned", label: "Calories" },
+  { key: "rating", label: "Rating" },
+];
 
 const Library = () => {
   const [workouts, setWorkouts] = useState<IWorkout[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [sortKey, setSortKey] = useState<TSortKey>("duration");
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -21,7 +29,9 @@ const Library = () => {
     fetchWorkouts();
   }, []);
 
-
+  const sortedWorkouts = useMemo(() => {
+    return [...workouts].sort((a, b) => b[sortKey] - a[sortKey]);
+  }, [workouts, sortKey]);
 
   return (
     <section id="library" className="container mx-auto px-4 py-16">
@@ -37,7 +47,25 @@ const Library = () => {
 
         {/* Sort dropdown */}
         <div className="dropdown dropdown-end">
-          <h1>sort</h1>
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-outline btn-sm rounded-full font-display uppercase tracking-wide"
+          >
+            Sort By: {sortOptions.find((o) => o.key === sortKey)?.label} ⌄
+          </div>
+          <ul
+            tabIndex={0}
+            className="menu dropdown-content z-10 mt-2 w-44 rounded-box border border-base-300 bg-base-200 p-2 shadow-lg"
+          >
+            {sortOptions.map((option) => (
+              <li key={option.key}>
+                <button onClick={() => setSortKey(option.key)}>
+                  {option.label}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
@@ -46,13 +74,13 @@ const Library = () => {
         <p className="mt-16 text-center text-base-content/50">
           Loading workouts…
         </p>
-      ) : workouts.length === 0 ? (
+      ) : sortedWorkouts.length === 0 ? (
         <p className="mt-16 text-center text-base-content/50">
           No workouts found. Check the FitLog API connection.
         </p>
       ) : (
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {workouts.map((workout) => (
+          {sortedWorkouts.map((workout) => (
             <WorkoutCard key={workout.id} workout={workout} />
           ))}
         </div>
