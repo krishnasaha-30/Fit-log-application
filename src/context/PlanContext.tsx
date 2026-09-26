@@ -43,7 +43,7 @@ const PlanProvider = ({ children }: { children: ReactNode }) => {
   const [saved, setSaved] = useState<IPlanItem[]>([]);
   const [hydrated, setHydrated] = useState(false);
 
-  // Hydrate from localStorage on first mount (optional)
+  // Hydrate from localStorage on first mount (optional persistence requirement)
   useEffect(() => {
     try {
       const storedPlan = localStorage.getItem(PLAN_STORAGE_KEY);

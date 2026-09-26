@@ -1,6 +1,6 @@
 import { IWorkout } from "@/types/workout.type";
 
-const API_BASE = "https://api.abcz.workers.dev/api/fitlog";
+const API_BASE = "https://api.api-store.workers.dev/api/fitlog";
 
 
 export const getWorkouts = async (): Promise<IWorkout[]> => {
