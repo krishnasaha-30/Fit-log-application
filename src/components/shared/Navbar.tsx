@@ -1,5 +1,4 @@
-
- "use client";
+"use client";
 import Link from "next/link";
 import React, { use } from "react";
 import Image from "next/image";
