@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Navbar from "@/components/shared/Navbar";
 import PlanProvider from "@/context/PlanContext";
+import Footer from "@/components/shared/Footer";
 
 const oswald = Oswald({
   variable: "--font-display",
@@ -34,6 +35,7 @@ export default function RootLayout({
         <PlanProvider>
           <Navbar />
           <main className="min-h-[70vh]">{children}</main>
+           <Footer />
           <ToastContainer position="top-right" theme="dark" autoClose={2500} />
         </PlanProvider>
       </body>

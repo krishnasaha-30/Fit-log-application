@@ -1,22 +1,35 @@
 "use client";
+
 import PlanWorkoutCard from "@/components/myPlan/PlanWorkoutCard";
 import { usePlan } from "@/context/PlanContext";
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
 
 type TTab = "plan" | "saved";
+type TSortKey = "duration" | "caloriesBurned" | "rating";
 
 const tabs: { key: TTab; label: string }[] = [
   { key: "plan", label: "Today's Plan" },
   { key: "saved", label: "Saved" },
 ];
 
+const sortOptions: { key: TSortKey; label: string }[] = [
+  { key: "duration", label: "Duration" },
+  { key: "caloriesBurned", label: "Calories" },
+  { key: "rating", label: "Rating" },
+];
+
 const MyPlanPage = () => {
   const { todaysPlan, saved, markAsDone, removeFromPlan, removeFromSaved } =
     usePlan();
   const [activeTab, setActiveTab] = useState<TTab>("plan");
+  const [sortKey, setSortKey] = useState<TSortKey>("duration");
 
   const activeList = activeTab === "plan" ? todaysPlan : saved;
+
+  const sortedList = useMemo(() => {
+    return [...activeList].sort((a, b) => b[sortKey] - a[sortKey]);
+  }, [activeList, sortKey]);
 
   const metrics = useMemo(
     () => [
@@ -60,26 +73,53 @@ const MyPlanPage = () => {
         ))}
       </div>
 
-      {/* Tabs */}
-      <div className="mt-10 flex gap-2 border-b border-base-300">
-        {tabs.map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={`px-4 py-2 font-display text-sm font-semibold uppercase tracking-wide ${
-              activeTab === tab.key
-                ? "border-b-2 border-primary text-primary"
-                : "text-base-content/50"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
+      {/* Tabs + Sort */}
+      <div className="mt-10 flex flex-col gap-4 border-b border-base-300 pb-0 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex gap-2">
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`px-4 py-2 font-display text-sm font-semibold uppercase tracking-wide ${
+                activeTab === tab.key
+                  ? "border-b-2 border-primary text-primary"
+                  : "text-base-content/50"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Sort dropdown */}
+        {activeList.length > 0 && (
+          <div className="dropdown dropdown-end mb-2">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-outline btn-sm rounded-full font-display uppercase tracking-wide"
+            >
+              Sort By: {sortOptions.find((o) => o.key === sortKey)?.label} ⌄
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu dropdown-content z-10 mt-2 w-44 rounded-box border border-base-300 bg-base-200 p-2 shadow-lg"
+            >
+              {sortOptions.map((option) => (
+                <li key={option.key}>
+                  <button onClick={() => setSortKey(option.key)}>
+                    {option.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       {/* List */}
       <div className="mt-6 space-y-4">
-        {activeList.length === 0 ? (
+        {sortedList.length === 0 ? (
           <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-base-300 py-16 text-center">
             <h3 className="font-display text-xl font-bold uppercase">
               Nothing Here Yet
@@ -95,7 +135,7 @@ const MyPlanPage = () => {
             </Link>
           </div>
         ) : (
-          activeList.map((item) => (
+          sortedList.map((item) => (
             <PlanWorkoutCard
               key={item.id}
               item={item}

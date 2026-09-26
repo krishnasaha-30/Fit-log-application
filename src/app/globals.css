@@ -41,7 +41,7 @@ body {
 }
 
 .tag-pill {
-  @apply rounded-full border border-base-300 bg-base-200 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-base-content/80;
+  @apply rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-content;
 }
 
 .stat-chip {

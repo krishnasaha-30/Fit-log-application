@@ -29,6 +29,14 @@ const WorkoutCard = ({ workout }: IWorkoutCardProps) => {
 
         {/* Content */}
         <div className="p-4">
+          {/* Category tags */}
+          <div className="mb-2 flex flex-wrap gap-2">
+            {workout.muscleGroups.map((tag) => (
+              <span key={tag} className="tag-pill">
+                {tag}
+              </span>
+            ))}
+          </div>
           {/* Name */}
           <h3 className="font-display text-lg font-bold uppercase leading-snug text-base-content group-hover:text-primary">
             {workout.name}
